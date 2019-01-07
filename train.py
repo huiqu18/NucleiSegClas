@@ -1,17 +1,3 @@
-"""
-This script is used to train the FullNet using prepared dataset.
-
-Params:
-    The parameters are set in the params.py
-
-Outputs:
-    After training, the best model, some checkpoints, and training and validation data will be saved
-    to the save path.
-
-Author: Hui Qu
-"""
-
-
 import torch
 import torch.nn as nn
 import torch.optim

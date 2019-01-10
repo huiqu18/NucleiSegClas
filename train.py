@@ -202,8 +202,7 @@ def train(train_loader, model, optimizer, criterion, epoch):
 
         if params.train['beta'] != 0:
             prob_maps = F.softmax(output, dim=1)
-            pred_map = torch.argmax(prob_maps, dim=1, keepdim=True)
-            pred_map = (pred_map==4).repeat(1,3,1,1).float()    # only care about the contours
+            pred_map = prob_maps[:,4:5,:,:].repeat(1,3,1,1).float()    # only care about the contours
             target_map = (target_var==4).unsqueeze(1).repeat(1,3,1,1).float()
             pred_feat = vgg_model(pred_map)
             target_feat = vgg_model(target_map)
@@ -297,9 +296,8 @@ def validate(val_loader, model, criterion):
 
         if params.train['beta'] != 0:
             prob_maps = F.softmax(output, dim=1)
-            pred_map = torch.argmax(prob_maps, dim=1, keepdim=True)
-            pred_map = pred_map.repeat(1, 3, 1, 1).float()
-            target_map = target_var.unsqueeze(1).repeat(1, 3, 1, 1).float()
+            pred_map = prob_maps[:,4:5,:,:].repeat(1, 3, 1, 1).float()
+            target_map = (target_var==4).unsqueeze(1).repeat(1, 3, 1, 1).float()
             pred_feat = vgg_model(pred_map)
             target_feat = vgg_model(target_map)
             loss_perceptual = criterion_perceptual(pred_feat, target_feat)
